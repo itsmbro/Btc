@@ -1,52 +1,53 @@
 import streamlit as st
-import requests
+import yfinance as yf
 import pandas as pd
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
-# Funzione per recuperare i dati da CoinGecko API
-def get_bitcoin_data():
-    url = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart'
-    params = {
-        'vs_currency': 'usd',
-        'days': '30',  # Modifica il numero di giorni per cambiare l'intervallo
-        'interval': 'daily'  # Può essere 'daily', 'weekly', 'monthly'
-    }
+# Configura la pagina
+st.set_page_config(page_title="Smart Portfolio Manager", layout="wide")
+
+# Titolo e descrizione
+st.title("📈 Smart Portfolio Manager")
+st.markdown("Analizza il mercato azionario in tempo reale e gestisci il tuo portafoglio.")
+
+# Sidebar per la selezione del titolo
+st.sidebar.header("Seleziona un'azione")
+ticker = st.sidebar.text_input("Inserisci il simbolo dell'azione (es. AAPL, TSLA)", "AAPL")
+
+# Funzione per ottenere dati di mercato
+@st.cache_data
+def get_stock_data(ticker):
+    try:
+        stock = yf.Ticker(ticker)
+        df = stock.history(period="1mo")
+        return df
+    except:
+        return None
+
+# Carica i dati
+df = get_stock_data(ticker)
+
+# Verifica se i dati sono validi
+if df is not None and not df.empty:
+    # Creazione del grafico con Plotly
+    fig = go.Figure()
+    fig.add_trace(go.Candlestick(
+        x=df.index, 
+        open=df["Open"], 
+        high=df["High"], 
+        low=df["Low"], 
+        close=df["Close"], 
+        name="Candlestick"
+    ))
+
+    # Impostazioni del grafico
+    fig.update_layout(title=f"Andamento di {ticker}", xaxis_rangeslider_visible=False)
+
+    # Mostra il grafico
+    st.plotly_chart(fig, use_container_width=True)
     
-    response = requests.get(url, params=params)
-    data = response.json()
-
-    # Estrai i prezzi da "prices" e convertili in un DataFrame
-    prices = data['prices']
-    df = pd.DataFrame(prices, columns=['timestamp', 'price'])
-    
-    # Converti il timestamp in formato leggibile
-    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
-    
-    return df
-
-# Titolo dell'app
-st.title("📉 Andamento Prezzo Bitcoin")
-
-# Descrizione dell'app
-st.write("""
-    Questa app mostra l'andamento del prezzo di Bitcoin negli ultimi 30 giorni.
-    Puoi modificare l'intervallo temporale o la frequenza dei dati tramite le opzioni.
-""")
-
-# Seleziona l'intervallo temporale
-days = st.slider('Seleziona l\'intervallo di giorni per l\'analisi:', 1, 365, 30)
-interval = st.selectbox('Seleziona l\'intervallo di dati:', ['daily', 'weekly', 'monthly'])
-
-# Ottieni i dati di Bitcoin
-st.write("Caricamento dei dati...")
-df = get_bitcoin_data()
-
-# Visualizza i dati su un grafico
-st.write(f"Andamento del prezzo di Bitcoin negli ultimi {days} giorni:")
-fig, ax = plt.subplots(figsize=(10, 5))
-ax.plot(df['timestamp'], df['price'], label='Prezzo di Bitcoin', color='orange')
-ax.set_title('Andamento del prezzo di Bitcoin (USD)')
-ax.set_xlabel('Data')
-ax.set_ylabel('Prezzo in USD')
-ax.grid(True)
-st.pyplot(fig)
+    # Mostra dati in tabella
+    st.write("### Dati Storici")
+    st.dataframe(df)
+else:
+    st.error("Errore nel recupero dei dati. Verifica il simbolo inserito.")
