@@ -40,6 +40,15 @@ if df is not None and not df.empty:
         name="Candlestick"
     ))
 
+# Calcola gli indicatori
+    df = calculate_rsi(df)
+    df = calculate_macd(df)
+    df = calculate_sma(df)
+    df = calculate_ema(df)
+
+# Mostra i risultati
+    st.write("### Indicatori Tecnici")
+    st.dataframe(df[['RSI', 'MACD', 'Signal', 'SMA', 'EMA']].tail())
     # Impostazioni del grafico
     fig.update_layout(title=f"Andamento di {ticker}", xaxis_rangeslider_visible=False)
 
