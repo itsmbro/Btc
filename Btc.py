@@ -19,7 +19,7 @@ ticker = st.sidebar.text_input("Inserisci il simbolo dell'azione (es. AAPL, TSLA
 def get_stock_data(ticker):
     try:
         stock = yf.Ticker(ticker)
-        df = stock.history(period="1mo")
+        df = stock.history(period="6mo")
         return df
     except:
         return None
