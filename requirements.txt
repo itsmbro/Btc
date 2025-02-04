@@ -5,3 +5,4 @@ plotly
 statsmodels
 numpy
 scikit-learn
+pmdarima
