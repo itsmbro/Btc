@@ -95,6 +95,7 @@ if df is not None and not df.empty:
         title=f"Andamento di {ticker}",
         xaxis_rangeslider_visible=False,
         height=700,  # Imposta l'altezza totale del grafico
+        legend=dict(x=0.5, y=1.1, xanchor='center', yanchor='bottom')
     )
 
     # Mostra il grafico
