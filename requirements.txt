@@ -6,4 +6,4 @@ statsmodels
 numpy
 scikit-learn
 cython
-pmdarima
+pmdarima==1.8.4
