@@ -2,7 +2,7 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import plotly.graph_objects as go
-from modules.indicators import calculate_rsi, calculate_macd, calculate_sma, calculate_ema
+from indicators import calculate_rsi, calculate_macd, calculate_sma, calculate_ema
 # Configura la pagina
 st.set_page_config(page_title="Smart Portfolio Manager", layout="wide")
 
