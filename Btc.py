@@ -3,6 +3,10 @@ import yfinance as yf
 import pandas as pd
 import plotly.graph_objects as go
 from indicators import calculate_rsi, calculate_macd, calculate_sma, calculate_ema
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+
+
 # Configura la pagina
 st.set_page_config(page_title="Smart Portfolio Manager", layout="wide")
 
@@ -52,15 +56,75 @@ if df is not None and not df.empty:
     # Impostazioni del grafico
     fig.update_layout(title=f"Andamento di {ticker}", xaxis_rangeslider_visible=False)
 
-    # Mostra il grafico
-    st.plotly_chart(fig, use_container_width=True)
-    fig.add_trace(go.Scatter(
-    x=df.index, 
-    y=df['RSI'], 
-    mode='lines', 
+
+    
+    # Crea una figura con 2 pannelli: uno per i prezzi e uno per gli indicatori
+fig = make_subplots(
+    rows=2, cols=1, 
+    shared_xaxes=True, 
+    vertical_spacing=0.1, 
+    row_heights=[0.7, 0.3],  # Imposta la proporzione tra i pannelli
+    subplot_titles=[f'Andamento di {ticker}', 'RSI'],
+    row_titles=['Prezzi', 'Indicatori']
+)
+
+# Grafico principale (candlestick)
+fig.add_trace(go.Candlestick(
+    x=df.index,
+    open=df["Open"],
+    high=df["High"],
+    low=df["Low"],
+    close=df["Close"],
+    name="Candlestick"
+), row=1, col=1)
+
+# Aggiungi RSI come grafico a linee
+fig.add_trace(go.Scatter(
+    x=df.index,
+    y=df['RSI'],
+    mode='lines',
     name='RSI',
     line=dict(color='orange')
-))
+), row=2, col=1)
+
+# Aggiungi MACD, SMA, EMA se li vuoi visualizzare separatamente
+fig.add_trace(go.Scatter(
+    x=df.index,
+    y=df['MACD'],
+    mode='lines',
+    name='MACD',
+    line=dict(color='blue')
+), row=2, col=1)
+
+fig.add_trace(go.Scatter(
+    x=df.index,
+    y=df['SMA'],
+    mode='lines',
+    name='SMA',
+    line=dict(color='green')
+), row=2, col=1)
+
+fig.add_trace(go.Scatter(
+    x=df.index,
+    y=df['EMA'],
+    mode='lines',
+    name='EMA',
+    line=dict(color='red')
+), row=2, col=1)
+
+# Impostazioni generali del grafico
+fig.update_layout(
+    title=f"Andamento di {ticker}",
+    xaxis_rangeslider_visible=False,
+    height=700,  # Imposta l'altezza totale del grafico
+)
+
+# Mostra il grafico
+st.plotly_chart(fig, use_container_width=True)
+    
+    
+    
+    
     # Mostra dati in tabella
     st.write("### Dati Storici")
     st.dataframe(df)
