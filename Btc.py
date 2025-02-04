@@ -54,7 +54,13 @@ if df is not None and not df.empty:
 
     # Mostra il grafico
     st.plotly_chart(fig, use_container_width=True)
-    
+    fig.add_trace(go.Scatter(
+    x=df.index, 
+    y=df['RSI'], 
+    mode='lines', 
+    name='RSI',
+    line=dict(color='orange')
+))
     # Mostra dati in tabella
     st.write("### Dati Storici")
     st.dataframe(df)
