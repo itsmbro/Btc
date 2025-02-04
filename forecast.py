@@ -1,21 +1,15 @@
 import pandas as pd
 import numpy as np
 from statsmodels.tsa.arima.model import ARIMA
-from pmdarima import auto_arima
 
 def predict_prices(df, days=7):
-    """Prevede i prezzi futuri usando ARIMA con parametri ottimizzati."""
-
+    """Prevede i prezzi futuri usando ARIMA con parametri fissi."""
+    
     # Prendiamo solo la colonna 'Close' per la previsione
     data = df['Close'].dropna()
 
-    # Trova automaticamente i migliori parametri ARIMA
-    model_auto = auto_arima(data, seasonal=False, trace=True, suppress_warnings=True)
-    best_order = model_auto.order  # Ottieni l'ordine ottimale (p, d, q)
-    print(f"📊 Miglior ordine ARIMA trovato: {best_order}")
-
-    # Creiamo e addestriamo il modello ARIMA con i parametri ottimizzati
-    model = ARIMA(data, order=best_order)  
+    # Creiamo e addestriamo il modello ARIMA (ordine p=3, d=1, q=0)
+    model = ARIMA(data, order=(30,1,0))  # p=3, d=1, q=0
     model_fit = model.fit()
 
     # Facciamo la previsione per 'days' giorni
