@@ -2,8 +2,9 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import plotly.graph_objects as go
-from indicators import calculate_rsi, calculate_macd, calculate_sma, calculate_ema
 from plotly.subplots import make_subplots
+from indicators import calculate_rsi, calculate_macd, calculate_sma, calculate_ema
+from forecast import predict_prices  # Importiamo la funzione di previsione
 
 # Configura la pagina
 st.set_page_config(page_title="Smart Portfolio Manager", layout="wide")
@@ -37,16 +38,16 @@ if df is not None and not df.empty:
     df = calculate_sma(df)
     df = calculate_ema(df)
 
-    # Crea una figura con 2 pannelli: uno per i prezzi e uno per gli indicatori
+    # Creazione del grafico principale
     fig = make_subplots(
         rows=2, cols=1, 
         shared_xaxes=True, 
         vertical_spacing=0.1, 
-        row_heights=[0.7, 0.3],  # Imposta la proporzione tra i pannelli
+        row_heights=[0.7, 0.3],  
         subplot_titles=[f'Andamento di {ticker}', 'Indicatori Tecnici']
     )
 
-    # Grafico principale (candlestick)
+    # Grafico candlestick
     fig.add_trace(go.Candlestick(
         x=df.index,
         open=df["Open"],
@@ -56,45 +57,17 @@ if df is not None and not df.empty:
         name="Candlestick"
     ), row=1, col=1)
 
-    # Aggiungi RSI come grafico a linee
-    fig.add_trace(go.Scatter(
-        x=df.index,
-        y=df['RSI'],
-        mode='lines',
-        name='RSI',
-        line=dict(color='orange')
-    ), row=2, col=1)
+    # Aggiunta indicatori tecnici
+    fig.add_trace(go.Scatter(x=df.index, y=df['RSI'], mode='lines', name='RSI', line=dict(color='orange')), row=2, col=1)
+    fig.add_trace(go.Scatter(x=df.index, y=df['MACD'], mode='lines', name='MACD', line=dict(color='blue')), row=2, col=1)
+    fig.add_trace(go.Scatter(x=df.index, y=df['SMA'], mode='lines', name='SMA', line=dict(color='green')), row=2, col=1)
+    fig.add_trace(go.Scatter(x=df.index, y=df['EMA'], mode='lines', name='EMA', line=dict(color='red')), row=2, col=1)
 
-    # Aggiungi MACD, SMA, EMA se li vuoi visualizzare separatamente
-    fig.add_trace(go.Scatter(
-        x=df.index,
-        y=df['MACD'],
-        mode='lines',
-        name='MACD',
-        line=dict(color='blue')
-    ), row=2, col=1)
-
-    fig.add_trace(go.Scatter(
-        x=df.index,
-        y=df['SMA'],
-        mode='lines',
-        name='SMA',
-        line=dict(color='green')
-    ), row=2, col=1)
-
-    fig.add_trace(go.Scatter(
-        x=df.index,
-        y=df['EMA'],
-        mode='lines',
-        name='EMA',
-        line=dict(color='red')
-    ), row=2, col=1)
-
-    # Impostazioni generali del grafico
+    # Layout del grafico
     fig.update_layout(
         title=f"Andamento di {ticker}",
         xaxis_rangeslider_visible=False,
-        height=700,  # Imposta l'altezza totale del grafico
+        height=700,
         legend=dict(x=0.5, y=1.1, xanchor='center', yanchor='bottom')
     )
 
@@ -108,5 +81,45 @@ if df is not None and not df.empty:
     # Mostra dati storici
     st.write("### Dati Storici")
     st.dataframe(df)
+
+    # -------------------------------
+    # 🔥 SEZIONE PREVISIONE CON ARIMA
+    # -------------------------------
+    st.write("## 🔮 Previsione dei Prezzi con ARIMA")
+
+    # Selezione del periodo di previsione
+    days = st.slider("Seleziona il numero di giorni da prevedere", min_value=1, max_value=7, value=3)
+
+    if st.button("Genera Previsione"):
+        forecast_df = predict_prices(df, days)
+
+        # Mostra la tabella con la previsione
+        st.write(f"### Previsione per i prossimi {days} giorni")
+        st.dataframe(forecast_df)
+
+        # Grafico con i prezzi storici + previsione
+        forecast_fig = go.Figure()
+
+        # Prezzi storici
+        forecast_fig.add_trace(go.Scatter(
+            x=df.index,
+            y=df["Close"],
+            mode='lines',
+            name='Prezzo Storico',
+            line=dict(color='blue')
+        ))
+
+        # Prezzo previsto
+        forecast_fig.add_trace(go.Scatter(
+            x=forecast_df["Date"],
+            y=forecast_df["Predicted Close"],
+            mode='lines+markers',
+            name='Previsione',
+            line=dict(color='red', dash='dash')
+        ))
+
+        forecast_fig.update_layout(title="Previsione del Prezzo con ARIMA")
+        st.plotly_chart(forecast_fig, use_container_width=True)
+
 else:
     st.error("Errore nel recupero dei dati. Verifica il simbolo inserito.")
