@@ -25,6 +25,6 @@ def generate_market_comment(ticker, df):
             {"role": "system", "content": "Sei un esperto analista finanziario."},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=200
+        max_tokens=300
     )
     return response.choices[0].message.content
