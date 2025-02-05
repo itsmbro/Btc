@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Carica la chiave API da variabile d'ambiente
-openai.api_key = os.getenv("OPENAI_API_KEY") 
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def generate_market_comment(ticker, df):
     """Genera un commento sull'andamento del mercato"""
@@ -20,12 +20,15 @@ def generate_market_comment(ticker, df):
     Fornisci un'analisi dettagliata sui trend, la volatilità e possibili scenari futuri.
     """
     
-    # Chiamata API OpenAI per generare il commento
-    response = openai.Completion.create(
+    # Chiamata API OpenAI per generare il commento (usando il nuovo metodo)
+    response = openai.ChatCompletion.create(
         model="gpt-4",  # Usa GPT-4 per la generazione del testo
-        prompt=prompt,
+        messages=[
+            {"role": "system", "content": "Sei un esperto analista finanziario."},
+            {"role": "user", "content": prompt}
+        ],
         max_tokens=300  # Impostazione del numero massimo di token da restituire
     )
 
     # Restituisci il commento generato
-    return response.choices[0].text.strip()
+    return response['choices'][0]['message']['content'].strip()
