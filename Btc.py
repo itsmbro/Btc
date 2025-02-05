@@ -13,24 +13,38 @@ st.set_page_config(page_title="Smart Portfolio Manager", layout="wide")
 st.title("📈 Smart Portfolio Manager")
 st.markdown("Analizza il mercato azionario in tempo reale e gestisci il tuo portafoglio.")
 
+
+
 # Sidebar per la selezione del titolo
-st.sidebar.header("Seleziona un'azione")
-#ticker = st.sidebar.text_input("Inserisci il simbolo dell'azione (es. AAPL, TSLA)", "AAPL")
+st.sidebar.header("Seleziona un asset")
 
+# Liste separate per azioni e criptovalute
+stocks = [
+    'AAPL', 'GOOGL', 'TSLA', 'AMZN', 'MSFT', 'META', 'NFLX', 'NVDA',  
+    'AMD', 'INTC', 'BABA', 'V', 'JPM', 'DIS', 'PYPL', 'ADBE', 'CSCO', 'PEP', 'KO',  
+    'NKE', 'PFE', 'MRNA', 'BA', 'XOM', 'T', 'IBM', 'ORCL', 'GE', 'UBER', 'SQ'  
+]
 
+cryptos = [
+    'BTC-USD', 'ETH-USD', 'BNB-USD', 'SOL-USD', 'XRP-USD',  
+    'ADA-USD', 'DOGE-USD', 'DOT-USD', 'MATIC-USD', 'LTC-USD',  
+    'AVAX-USD', 'LINK-USD', 'BCH-USD', 'XLM-USD', 'ATOM-USD'  
+]
 
+# Radio button per la scelta della categoria
+asset_type = st.sidebar.radio("Tipo di asset", ["Azioni", "Criptovalute", "Altro"])
 
-# Lista delle azioni più importanti
-stock_list = ['AAPL', 'GOOGL', 'TSLA', 'AMZN', 'MSFT', 'META', 'NFLX', 'NVDA']
-
-# Menu a discesa per scegliere un'azione o inserire manualmente il simbolo
-ticker_choice = st.sidebar.selectbox("Scegli un'azione o inserisci un simbolo personalizzato", stock_list + ['Altro...'])
-
-# Se l'utente seleziona 'Altro...', consenti l'inserimento manuale del simbolo
-if ticker_choice == 'Altro...':
-    ticker = st.sidebar.text_input("Inserisci il simbolo dell'azione (es. AAPL, TSLA)", "AAPL")
+# Selezione del ticker
+if asset_type == "Azioni":
+    ticker = st.sidebar.selectbox("Seleziona un'azione", stocks + ["Altro..."])
+elif asset_type == "Criptovalute":
+    ticker = st.sidebar.selectbox("Seleziona una criptovaluta", cryptos + ["Altro..."])
 else:
-    ticker = ticker_choice  # Usa il ticker selezionato dalla lista
+    ticker = "Altro..."
+
+# Permetti input manuale se l'utente seleziona "Altro..."
+if ticker == "Altro...":
+    ticker = st.sidebar.text_input("Inserisci il simbolo dell'asset", "")
 
 
 
