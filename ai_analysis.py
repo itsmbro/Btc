@@ -10,13 +10,13 @@ openai_client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 def generate_market_comment(ticker, df):
     """Genera un commento sull'andamento del mercato"""
     # Prendi gli ultimi 7 giorni di prezzi di chiusura
-    prezzi = df["Close"].tail(7).tolist()
+    prezzi = df["Close"].tail(14).tolist()
     
     # Costruisci il prompt per OpenAI
     prompt = f"""
-    Analizza l'andamento dell'azione {ticker} negli ultimi 7 giorni.
+    Analizza l'andamento dell'azione {ticker} negli ultimi 14 giorni.
     I prezzi di chiusura sono: {prezzi}.
-    Fornisci un'analisi dettagliata sui trend, la volatilità e possibili scenari futuri. Dai suggerimenti motivati riguardo all'acquisto dell'azione.
+    Fornisci un'analisi dettagliata sul trend, la volatilità e dai suggerimenti motivati riguardo all'acquisto dell'azione. usa anche qualche emoji per rendere tutto più accattivante.
     """
     
     response = openai_client.chat.completions.create(
@@ -25,6 +25,6 @@ def generate_market_comment(ticker, df):
             {"role": "system", "content": "Sei un esperto analista finanziario."},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=300
+        max_tokens=200
     )
     return response.choices[0].message.content
