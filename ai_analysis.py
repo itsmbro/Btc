@@ -30,8 +30,8 @@ def generate_market_comment(ticker, df):
         messages=[
             {"role": "system", "content": "Sei un esperto analista finanziario."},
             {"role": "user", "content": prompt}
-        ],
-        max_tokens=300  # Impostazione del numero massimo di token da restituire
+        ]
+        #max_tokens=300  # Impostazione del numero massimo di token da restituire
     )
 
     # Restituisci il commento generato
