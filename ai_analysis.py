@@ -11,7 +11,7 @@ import streamlit as st
 # Accedere alla chiave API dal file secrets.toml
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-st.write(f"La tua chiave API è: {openai_api_key}")
+#st.write(f"La tua chiave API è: {openai_api_key}")
 def generate_market_comment(ticker, df):
     """Genera un commento sull'andamento del mercato"""
     # Prendi gli ultimi 7 giorni di prezzi di chiusura
