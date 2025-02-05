@@ -17,7 +17,7 @@ def generate_market_comment(ticker, df):
     Analizza l'andamento dell'azione {ticker} negli ultimi 14 giorni.
     I prezzi di chiusura sono: {prezzi}.
     Fornisci un'analisi dettagliata sul trend, la volatilità e dai suggerimenti motivati riguardo all'acquisto dell'azione. usa anche qualche emoji per rendere tutto più accattivante.
-    """
+    sii conciso e dritto al punto."""
     
     response = openai_client.chat.completions.create(
         model="gpt-4",
