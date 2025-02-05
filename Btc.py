@@ -88,7 +88,7 @@ if df is not None and not df.empty:
     st.write("## 🔮 Previsione dei Prezzi con ARIMA")
 
     # Selezione del periodo di previsione
-    days = st.slider("Seleziona il numero di giorni da prevedere", min_value=1, max_value=7, value=3)
+    days = st.slider("Seleziona il numero di giorni da prevedere", min_value=1, max_value=30, value=3)
 
     if st.button("Genera Previsione"):
         forecast_df = predict_prices(df, days)
