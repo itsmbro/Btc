@@ -4,7 +4,7 @@ import openai
 import streamlit as st
 
 # Accedere alla chiave API dal file secrets.toml
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+openai_client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 #st.write(f"La tua chiave API è: {openai_api_key}")
 def generate_market_comment(ticker, df):
@@ -19,15 +19,12 @@ def generate_market_comment(ticker, df):
     Fornisci un'analisi dettagliata sui trend, la volatilità e possibili scenari futuri.
     """
     
-    # Chiamata API OpenAI per generare il commento (usando il nuovo metodo)
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # Usa GPT-4 per la generazione del testo
+    response = openai_client.chat.completions.create(
+        model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "Sei un esperto analista finanziario."},
             {"role": "user", "content": prompt}
-        ]
-        #max_tokens=300  # Impostazione del numero massimo di token da restituire
+        ],
+        max_tokens=300
     )
-
-    # Restituisci il commento generato
-    return response['choices'][0]['message']['content'].strip()
+    return response.choices[0].message.content
