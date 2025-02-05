@@ -5,3 +5,5 @@ plotly
 statsmodels
 numpy
 scikit-learn
+openai
+python-dotenv
