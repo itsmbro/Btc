@@ -22,7 +22,7 @@ def generate_market_comment(ticker, df):
     
     # Chiamata API OpenAI per generare il commento (usando il nuovo metodo)
     response = openai.ChatCompletion.create(
-        model="gpt-4",  # Usa GPT-4 per la generazione del testo
+        model="gpt-3.5-turbo",  # Usa GPT-4 per la generazione del testo
         messages=[
             {"role": "system", "content": "Sei un esperto analista finanziario."},
             {"role": "user", "content": prompt}
