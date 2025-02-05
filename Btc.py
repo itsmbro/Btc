@@ -15,7 +15,7 @@ st.markdown("Analizza il mercato azionario in tempo reale e gestisci il tuo port
 
 # Sidebar per la selezione del titolo
 st.sidebar.header("Seleziona un'azione")
-ticker = st.sidebar.text_input("Inserisci il simbolo dell'azione (es. AAPL, TSLA)", "AAPL")
+#ticker = st.sidebar.text_input("Inserisci il simbolo dell'azione (es. AAPL, TSLA)", "AAPL")
 
 
 
