@@ -7,7 +7,7 @@ from indicators import calculate_rsi, calculate_macd, calculate_sma, calculate_e
 from forecast import predict_prices  # Importiamo la funzione di previsione
 
 # Configura la pagina
-st.set_page_config()#page_title="Smart Portfolio Manager", layout="wide")
+st.set_page_config(page_title="💰easyFinance - by mickybi😏", layout="wide")
 
 # Titolo e descrizione
 st.title("📈 Smart Portfolio Manager")
