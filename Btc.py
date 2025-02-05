@@ -17,6 +17,26 @@ st.markdown("Analizza il mercato azionario in tempo reale e gestisci il tuo port
 st.sidebar.header("Seleziona un'azione")
 ticker = st.sidebar.text_input("Inserisci il simbolo dell'azione (es. AAPL, TSLA)", "AAPL")
 
+
+
+
+# Lista delle azioni più importanti
+stock_list = ['AAPL', 'GOOGL', 'TSLA', 'AMZN', 'MSFT', 'META', 'NFLX', 'NVDA']
+
+# Menu a discesa per scegliere un'azione o inserire manualmente il simbolo
+ticker_choice = st.sidebar.selectbox("Scegli un'azione o inserisci un simbolo personalizzato", stock_list + ['Altro...'])
+
+# Se l'utente seleziona 'Altro...', consenti l'inserimento manuale del simbolo
+if ticker_choice == 'Altro...':
+    ticker = st.sidebar.text_input("Inserisci il simbolo dell'azione (es. AAPL, TSLA)", "AAPL")
+else:
+    ticker = ticker_choice  # Usa il ticker selezionato dalla lista
+
+
+
+
+
+
 # Funzione per ottenere dati di mercato
 @st.cache_data
 def get_stock_data(ticker):
