@@ -5,5 +5,5 @@ plotly
 statsmodels
 numpy
 scikit-learn
-openai
+openai==1.61.0
 python-dotenv
