@@ -5,17 +5,17 @@ secondaryBackgroundColor = "#313131"
 textColor = "#FAFAFA"
 font = "monospace"
 base="auto" 
-browserTitle = "easyFinance - by @MickyBi" 
+page_title = "easyFinance - by @MickyBi" 
 
 
 [client]
 toolbarMode = "minimal"  # Nasconde la barra degli strumenti
 showErrorDetails = false  # Evita di mostrare errori dettagliati agli utenti
-browserTitle = "easyFinance - by @MickyBi" 
+page_title = "easyFinance - by @MickyBi" 
 
 [server]
 runOnSave = true
-browserTitle = "easyFinance - by @MickyBi" 
+page_title = "easyFinance - by @MickyBi" 
 
 [caching]
 enable = true 
