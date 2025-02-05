@@ -143,3 +143,18 @@ if df is not None and not df.empty:
 
 else:
     st.error("Errore nel recupero dei dati. Verifica il simbolo inserito.")
+
+
+from ai_analysis import generate_market_comment  # Importa la funzione di analisi
+
+# -------------------------------
+# 🔥 SEZIONE ANALISI AI (GPT-4)
+# -------------------------------
+st.write("## 🤖 Analisi Automatica del Mercato")
+
+if st.button("Genera Analisi AI"):
+    with st.spinner("Generando il commento..."):
+        ai_comment = generate_market_comment(ticker, df)
+        st.write("### 📊 Commento AI")
+        st.success(ai_comment)
+
