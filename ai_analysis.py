@@ -11,9 +11,11 @@ def generate_market_comment(ticker, df):
     Fornisci un'analisi dettagliata sui trend, la volatilità e possibili scenari futuri.
     """
 
-    response = openai.ChatCompletion.create(
+    client = openai.OpenAI()  # Crea un client OpenAI
+
+    response = client.chat.completions.create(
         model="gpt-4",
         messages=[{"role": "user", "content": prompt}]
-    )
+        )
 
     return response["choices"][0]["message"]["content"]
