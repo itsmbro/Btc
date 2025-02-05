@@ -4,3 +4,16 @@ backgroundColor = "#1E1E1E"
 secondaryBackgroundColor = "#313131"
 textColor = "#FAFAFA"
 font = "monospace"
+base="auto" 
+
+
+[client]
+toolbarMode = "minimal"  # Nasconde la barra degli strumenti
+showErrorDetails = false  # Evita di mostrare errori dettagliati agli utenti
+browserTitle = "easyFinance - by @MickyBi" 
+
+[server]
+runOnSave = true
+
+[caching]
+enable = true 
