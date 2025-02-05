@@ -9,7 +9,7 @@ def predict_prices(df, days=7):
     data = df['Close'].dropna()
 
     # Creiamo e addestriamo il modello ARIMA (ordine p=3, d=1, q=0)
-    model = ARIMA(data, order=(5,1,2))  # p=3, d=1, q=0
+    model = ARIMA(data, order=(10,1,0))  # p=3, d=1, q=0
     model_fit = model.fit()
 
     # Facciamo la previsione per 'days' giorni
