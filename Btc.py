@@ -11,7 +11,7 @@ st.set_page_config(page_title="Smart Portfolio Manager", layout="wide")
 
 # Titolo e descrizione
 st.title("📈 Smart Portfolio Manager")
-st.markdown("Analizza il mercato azionario in tempo reale e gestisci il tuo portafoglio.")
+st.markdown("Analizza il mercato azionario in tempo reale e gestisci il tuo portafoglio💰")
 
 
 
