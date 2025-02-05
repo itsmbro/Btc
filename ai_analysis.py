@@ -16,7 +16,7 @@ def generate_market_comment(ticker, df):
     prompt = f"""
     Analizza l'andamento dell'azione {ticker} negli ultimi 7 giorni.
     I prezzi di chiusura sono: {prezzi}.
-    Fornisci un'analisi dettagliata sui trend, la volatilità e possibili scenari futuri.
+    Fornisci un'analisi dettagliata sui trend, la volatilità e possibili scenari futuri. Dai suggerimenti motivati riguardo all'acquisto dell'azione.
     """
     
     response = openai_client.chat.completions.create(
