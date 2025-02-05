@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 # Carica la chiave API da variabile d'ambiente
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("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")
 
 def generate_market_comment(ticker, df):
     """Genera un commento sull'andamento del mercato"""
