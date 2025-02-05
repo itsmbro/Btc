@@ -5,6 +5,7 @@ secondaryBackgroundColor = "#313131"
 textColor = "#FAFAFA"
 font = "monospace"
 base="auto" 
+browserTitle = "easyFinance - by @MickyBi" 
 
 
 [client]
@@ -14,6 +15,7 @@ browserTitle = "easyFinance - by @MickyBi"
 
 [server]
 runOnSave = true
+browserTitle = "easyFinance - by @MickyBi" 
 
 [caching]
 enable = true 
