@@ -149,18 +149,18 @@ if st.button("Genera Previsione (ARIMA)"):
 
 # Bottone per LightGBM
 if st.button("Genera Previsione (LightGBM)"):
-    forecast_df_lgbm = predict_prices_custom(df, days)
+    forecast_df = predict_prices(df, days)
 
-    st.write(f"### Previsione per i prossimi {days} giorni (LightGBM)")
-    st.dataframe(forecast_df_lgbm)
+    st.write(f"### Previsione per i prossimi {days} giorni (ARIMA)")
+    st.dataframe(forecast_df)
 
-    forecast_fig_lgbm = go.Figure()
+    forecast_fig = go.Figure()
 
-    forecast_fig_lgbm.add_trace(go.Scatter(x=df.index, y=df["Close"], mode='lines', name='Prezzo Storico', line=dict(color='blue')))
-    forecast_fig_lgbm.add_trace(go.Scatter(x=forecast_df_lgbm["Date"], y=forecast_df_lgbm["Predicted Close"], mode='lines+markers', name='Previsione LightGBM', line=dict(color='green', dash='dot')))
+    forecast_fig.add_trace(go.Scatter(x=df.index, y=df["Close"], mode='lines', name='Prezzo Storico', line=dict(color='blue')))
+    forecast_fig.add_trace(go.Scatter(x=forecast_df["Date"], y=forecast_df["Predicted Close"], mode='lines+markers', name='Previsione ARIMA', line=dict(color='red', dash='dash')))
 
-    forecast_fig_lgbm.update_layout(title="Previsione del Prezzo con LightGBM")
-    st.plotly_chart(forecast_fig_lgbm, use_container_width=True)
+    forecast_fig.update_layout(title="Previsione del Prezzo con ARIMA")
+    st.plotly_chart(forecast_fig, use_container_width=True)
 
 
 
