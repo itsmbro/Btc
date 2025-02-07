@@ -149,14 +149,14 @@ if st.button("Genera Previsione (ARIMA)"):
 
 # Bottone per LightGBM
 if st.button("Genera Previsione (LightGBM)"):
-    forecast_df = predict_prices(df, days)
+    forecast_df = predict_prices_custom(df, days)
 
     st.write(f"### Previsione per i prossimi {days} giorni (ARIMA)")
     st.dataframe(forecast_df)
 
     forecast_fig = go.Figure()
 
-    forecast_fig.add_trace(go.Scatter(x=df.index, y=df["Close"], mode='lines', name='Prezzo Storico', line=dict(color='blue')))
+    forecast_fig.add_trace(go.Scatter(x=df.index, y=df["Predicted Close"], mode='lines', name='Prezzo Storico', line=dict(color='blue')))
     forecast_fig.add_trace(go.Scatter(x=forecast_df["Date"], y=forecast_df["Predicted Close"], mode='lines+markers', name='Previsione ARIMA', line=dict(color='red', dash='dash')))
 
     forecast_fig.update_layout(title="Previsione del Prezzo con ARIMA")
