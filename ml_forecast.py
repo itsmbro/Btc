@@ -1,29 +1,43 @@
 import pandas as pd
 
-# Funzione per la previsione basata sulla formula personalizzata
 def predict_prices_custom(df, days=5):
-    forecast = []
-    last_close = df['Close'].iloc[-1]
-    last_open = df['Open'].iloc[-1]
-    ema_fast = df['EMA'].iloc[-1]  # Assumiamo che EMA calcolato sia EMA_fast
-    ema_slow = df['EMA'].rolling(window=20).mean().iloc[-1]  # Media mobile più lenta
+    # Assicurati che ci siano le colonne necessarie
+    data = df[['Close', 'Open', 'EMA_Fast', 'EMA_Slow']].dropna().copy()
+
+    # Inizializza una lista per salvare le previsioni
+    predictions = []
+
+    # Prendi i valori iniziali dall'ultimo giorno disponibile
+    last_close = data['Close'].iloc[-1]
+    last_open = data['Open'].iloc[-1]
+    last_ema_fast = data['EMA_Fast'].iloc[-1]
+    last_ema_slow = data['EMA_Slow'].iloc[-1]
 
     for i in range(days):
-        price_change = last_close - last_open
-        predicted_price = 0.05 * ema_fast - 0.002 * ema_slow + price_change + last_close
+        # Calcolo del prezzo futuro
+        predicted_price = (
+            0.05 * last_ema_fast 
+            - 0.002 * last_ema_slow 
+            + (last_close - last_open) 
+            + last_close
+        )
 
-        # Aggiungiamo il risultato alla lista delle previsioni
-        forecast.append({
+        # Salva la previsione
+        predictions.append({
             'Day': i + 1,
             'Predicted Close': predicted_price
         })
 
-        # Aggiorniamo i valori per il giorno successivo
-        last_open = last_close  # Il nuovo "open" sarà il "close" precedente
-        last_close = predicted_price
-        ema_fast = (ema_fast * 0.9) + (predicted_price * 0.1)  # Simulazione semplice per aggiornare EMA_fast
-        ema_slow = (ema_slow * 0.95) + (predicted_price * 0.05)  # Simulazione per EMA_slow
+        # Aggiorna i valori per il giorno successivo
+        last_open = last_close  # Consideriamo il nuovo open uguale al close precedente
+        last_close = predicted_price  
 
-    forecast_df = pd.DataFrame(forecast)
-    return forecast_df
+        # Aggiorna EMA usando la formula EMA = α * prezzo + (1 - α) * EMA_precedente
+        alpha_fast = 2 / (10 + 1)  # EMA Fast con periodo 10
+        alpha_slow = 2 / (20 + 1)  # EMA Slow con periodo 20
+
+        last_ema_fast = alpha_fast * predicted_price + (1 - alpha_fast) * last_ema_fast
+        last_ema_slow = alpha_slow * predicted_price + (1 - alpha_slow) * last_ema_slow
+
+    return pd.DataFrame(predictions)
 
