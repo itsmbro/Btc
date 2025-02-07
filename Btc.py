@@ -149,7 +149,7 @@ if st.button("Genera Previsione (ARIMA)"):
 
 # Bottone per LightGBM
 if st.button("Genera Previsione (LightGBM)"):
-    forecast_df_lgbm = predict_with_lightgbm(df, days)
+    forecast_df_lgbm = predict_prices_custom(df, days)
 
     st.write(f"### Previsione per i prossimi {days} giorni (LightGBM)")
     st.dataframe(forecast_df_lgbm)
