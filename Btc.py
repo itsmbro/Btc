@@ -5,6 +5,8 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from indicators import calculate_rsi, calculate_macd, calculate_sma, calculate_ema
 from forecast import predict_prices  # Importiamo la funzione di previsione
+from ml_forecast import predict_with_lightgbm
+
 
 # Configura la pagina
 st.set_page_config(page_title="💰easyFinance - by mickybi😏", layout="wide")
