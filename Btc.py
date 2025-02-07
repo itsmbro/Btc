@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from indicators import calculate_rsi, calculate_macd, calculate_sma, calculate_ema
 from forecast import predict_prices  # Importiamo la funzione di previsione
-from ml_forecast import predict_with_lightgbm
+from ml_forecast import predict_prices_custom
 
 
 # Configura la pagina
